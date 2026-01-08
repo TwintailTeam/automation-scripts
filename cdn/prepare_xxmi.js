@@ -247,8 +247,8 @@ async function download_zips(package_id = "xxmi") {
                 const fileStream2 = createWriteStream(`${__dirname}/generated/${package_id}/3dmloader.exe`);
                 bodyStream2.pipe(fileStream2);
             }
+            break;
         }
-        break;
         case "gimi": {
             if (existsSync(`${PATHS.xxmi}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
@@ -274,12 +274,12 @@ async function download_zips(package_id = "xxmi") {
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
                         setTimeout(() => {
                             if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 5000);
+                        }, 10000);
                     });
                 });
             }
+            break;
         }
-        break;
         case "srmi": {
             if (existsSync(`${PATHS.xxmi}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
@@ -305,12 +305,12 @@ async function download_zips(package_id = "xxmi") {
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
                         setTimeout(() => {
                             if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 5000);
+                        }, 10000);
                     });
                 });
             }
+            break;
         }
-        break;
         case "zzmi": {
             if (existsSync(`${PATHS.xxmi}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
@@ -336,12 +336,12 @@ async function download_zips(package_id = "xxmi") {
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
                         setTimeout(() => {
                             if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 5000);
+                        }, 10000);
                     });
                 });
             }
+            break;
         }
-        break;
         case "himi": {
             if (existsSync(`${PATHS.xxmi}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
@@ -367,12 +367,12 @@ async function download_zips(package_id = "xxmi") {
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
                         setTimeout(() => {
                             if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 5000);
+                        }, 10000);
                     });
                 });
             }
+            break;
         }
-        break;
         case "wwmi": {
             if (existsSync(`${PATHS.xxmi}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
@@ -398,12 +398,12 @@ async function download_zips(package_id = "xxmi") {
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
                         setTimeout(() => {
                             if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 5000);
+                        }, 10000);
                     });
                 });
             }
+            break;
         }
-        break;
         case "ssmi": {
             if (existsSync(`${PATHS.xxmi}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
@@ -429,12 +429,12 @@ async function download_zips(package_id = "xxmi") {
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
                         setTimeout(() => {
                             if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 5000);
+                        }, 10000);
                     });
                 });
             }
+            break;
         }
-        break;
     }
 }
 
