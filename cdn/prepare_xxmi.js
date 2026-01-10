@@ -227,14 +227,10 @@ async function download_zips(package_id = "xxmi") {
                     method: "GET",
                     headers: {"User-Agent": USER_AGENT}
                 });
-                let dl2 = await fetch("https://github.com/TwintailTeam/3dmloader-Package/releases/download/2.0/3dmloader.exe", {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
-                fileStream.on('finish', () => {
+                fileStream.on('finish', async () => {
                     let extractDir = `${__dirname}/generated/${package_id}`;
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
@@ -242,10 +238,11 @@ async function download_zips(package_id = "xxmi") {
                     setTimeout(() => {
                         if (existsSync(archive)) {unlinkSync(archive);}
                     }, 5000);
+                    let dl2 = await fetch("https://github.com/TwintailTeam/3dmloader-Package/releases/download/2.0/3dmloader.exe", {method: "GET", headers: {"User-Agent": USER_AGENT}});
+                    const bodyStream2 = Readable.fromWeb(dl2.body);
+                    const fileStream2 = createWriteStream(`${__dirname}/generated/${package_id}/3dmloader.exe`);
+                    bodyStream2.pipe(fileStream2);
                 });
-                const bodyStream2 = Readable.fromWeb(dl2.body);
-                const fileStream2 = createWriteStream(`${__dirname}/generated/${package_id}/3dmloader.exe`);
-                bodyStream2.pipe(fileStream2);
             }
             break;
         }
@@ -493,7 +490,7 @@ function emptyDir(dirPath) {
     const files = readdirSync(dirPath, { withFileTypes: true });
     for (const file of files) {
         const fullPath = path.join(dirPath, file.name);
-        if (file.name === 'VERSION.txt') continue;
+        if (file.name === 'VERSION.txt' || file.name === "3dmloader.exe") continue;
         if (file.isDirectory()) {emptyDir(fullPath);rmdirSync(fullPath);} else {unlinkSync(fullPath);}
     }
 }
