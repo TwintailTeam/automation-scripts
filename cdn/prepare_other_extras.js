@@ -4,8 +4,8 @@ const {Readable} = require("node:stream");
 const path = require("node:path");
 
 let TTL_BASE = {
-    fps_unlock: "https://dl-public.twintaillauncher.app/launcher_app/extras/keqingunlock-latest",
-    jadeite: "https://dl-public.twintaillauncher.app/launcher_app/extras/jadeite-latest"
+    fps_unlock: "https://dl-public.twintaillauncher.app/launcher_app/packages/keqingunlock-latest",
+    jadeite: "https://dl-public.twintaillauncher.app/launcher_app/packages/jadeite-latest"
 };
 
 let PATHS = {
@@ -24,10 +24,7 @@ let URLS = {
 async function prepareJSON(package_id = "keqing_unlock") {
     switch (package_id) {
         case "keqing_unlock": {
-            let request = await fetch(URLS.keqing_unlock, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.keqing_unlock, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -49,10 +46,7 @@ async function prepareJSON(package_id = "keqing_unlock") {
             break;
         }
         case "jadeite": {
-            let request = await fetch(URLS.jadeite, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.jadeite, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { return; }
             let rsp = await request.json();
             let asset = rsp[0].assets.filter(asset => asset.name.toLowerCase().includes("v5.0.1-hotfix"));
@@ -81,11 +75,8 @@ async function download_zips(package_id = "xxmi") {
         case "keqing_unlock": {
             if (existsSync(`${PATHS.keqing_unlock}`)) {
                 let file = JSON.parse(readFileSync(`${PATHS.keqing_unlock}`, 'utf8'));
-                let dl = await fetch(file.packages[0].git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
-                emptyDir(`${__dirname}/tests/${package_id}`);
+                let dl = await fetch(file.packages[0].git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
+                emptyDir(`${__dirname}/generated/${package_id}`);
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${package_id}/${file.packages[0].package_name}`);
                 bodyStream.pipe(fileStream);
@@ -110,7 +101,7 @@ async function download_zips(package_id = "xxmi") {
                     unzip(archive, extractDir);
                     setTimeout(() => {
                         if (existsSync(archive)) {unlinkSync(archive);}
-                    }, 5000);
+                    }, 3000);
                 });
             }
         }
@@ -119,9 +110,13 @@ async function download_zips(package_id = "xxmi") {
 }
 
 function unzip(zipPath, outputDir) {
-    exec(`/usr/bin/unzip -o ${zipPath} -d ${outputDir}`, (err, stdout, stderr) => {
-        if (err) {console.error('Extraction error:', err);}
-        if (stderr) {console.error('Extraction error:', stderr);}
+    return new Promise((resolve, reject) => {
+        exec(`/usr/bin/unzip -o "${zipPath}" -d "${outputDir}"`, (err, _stdout, _stderr) => {
+            if (err) {
+                console.error('Extraction error:', err);
+                reject(err);
+            } else {resolve();}
+        });
     });
 }
 

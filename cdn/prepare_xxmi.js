@@ -3,11 +3,17 @@ const {exec} = require("child_process");
 const {Readable} = require("node:stream");
 const path = require("node:path");
 
-let TTL_BASE = "https://dl-public.twintaillauncher.app/launcher_app/extras/xxmi-latest";
+let TTL_BASE = "https://dl-public.twintaillauncher.app/launcher_app/packages/xxmi-latest";
 
 let PATHS = {
     xxmi: `${__dirname}/generated/xxmi.json`,
-    versions_file: `${__dirname}/generated/xxmi/VERSION.txt`,
+    versions_file_xxmi: `${__dirname}/generated/xxmi/VERSION.txt`,
+    versions_file_gimi: `${__dirname}/generated/gimi/VERSION.txt`,
+    versions_file_srmi: `${__dirname}/generated/srmi/VERSION.txt`,
+    versions_file_zzmi: `${__dirname}/generated/zzmi/VERSION.txt`,
+    versions_file_himi: `${__dirname}/generated/himi/VERSION.txt`,
+    versions_file_wwmi: `${__dirname}/generated/wwmi/VERSION.txt`,
+    versions_file_ssmi: `${__dirname}/generated/ssmi/VERSION.txt`,
 }
 
 let USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3";
@@ -24,10 +30,7 @@ let URLS = {
 async function prepareJSON(package_id = "xxmi") {
     switch (package_id) {
         case "xxmi": {
-            let request = await fetch(URLS.xxmi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.xxmi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (XXMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -45,14 +48,11 @@ async function prepareJSON(package_id = "xxmi") {
                     }]
             };
             writeFileSync(`${PATHS.xxmi}`, JSON.stringify(data, null, 2));
-            appendVersion(`${PATHS.versions_file}`, "XXMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_xxmi}`, "XXMI", `${ver}`);
             break;
         }
         case "gimi": {
-            let request = await fetch(URLS.gimi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.gimi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (GIMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -72,14 +72,11 @@ async function prepareJSON(package_id = "xxmi") {
                 file.packages.push(data);
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
-            appendVersion(`${PATHS.versions_file}`, "GIMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_gimi}`, "GIMI", `${ver}`);
             break;
         }
         case "srmi": {
-            let request = await fetch(URLS.srmi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.srmi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (SRMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -99,14 +96,11 @@ async function prepareJSON(package_id = "xxmi") {
                 file.packages.push(data);
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
-            appendVersion(`${PATHS.versions_file}`, "SRMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_srmi}`, "SRMI", `${ver}`);
             break;
         }
         case "zzmi": {
-            let request = await fetch(URLS.zzmi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.zzmi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (ZZMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -126,14 +120,11 @@ async function prepareJSON(package_id = "xxmi") {
                 file.packages.push(data);
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
-            appendVersion(`${PATHS.versions_file}`, "ZZMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_zzmi}`, "ZZMI", `${ver}`);
             break;
         }
         case "himi": {
-            let request = await fetch(URLS.himi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.himi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (HIMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -153,14 +144,11 @@ async function prepareJSON(package_id = "xxmi") {
                 file.packages.push(data);
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
-            appendVersion(`${PATHS.versions_file}`, "HIMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_himi}`, "HIMI", `${ver}`);
             break;
         }
         case "wwmi": {
-            let request = await fetch(URLS.wwmi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.wwmi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (WWMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -180,14 +168,11 @@ async function prepareJSON(package_id = "xxmi") {
                 file.packages.push(data);
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
-            appendVersion(`${PATHS.versions_file}`, "WWMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_wwmi}`, "WWMI", `${ver}`);
             break;
         }
         case "ssmi": {
-            let request = await fetch(URLS.ssmi, {
-                method: "GET",
-                headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}
-            });
+            let request = await fetch(URLS.ssmi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
             if (!request.ok) { console.error(`Failed with error (SSMI) ${request.status} ${request.statusText}`); return; }
             let rsp = await request.json();
             let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
@@ -207,7 +192,7 @@ async function prepareJSON(package_id = "xxmi") {
                 file.packages.push(data);
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
-            appendVersion(`${PATHS.versions_file}`, "SSMI", `${ver}`);
+            appendVersion(`${PATHS.versions_file_ssmi}`, "SSMI", `${ver}`);
             break;
         }
     }
@@ -223,10 +208,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`XXMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -237,7 +219,7 @@ async function download_zips(package_id = "xxmi") {
                     unzip(archive, extractDir);
                     setTimeout(() => {
                         if (existsSync(archive)) {unlinkSync(archive);}
-                    }, 5000);
+                    }, 3000);
                     let dl2 = await fetch("https://github.com/TwintailTeam/3dmloader-Package/releases/download/2.0/3dmloader.exe", {method: "GET", headers: {"User-Agent": USER_AGENT}});
                     const bodyStream2 = Readable.fromWeb(dl2.body);
                     const fileStream2 = createWriteStream(`${__dirname}/generated/${package_id}/3dmloader.exe`);
@@ -254,10 +236,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`GIMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -266,13 +245,11 @@ async function download_zips(package_id = "xxmi") {
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
                     unzip(archive, extractDir);
-                    list_archive_files(archive).then(files => {
-                        pkg.file_list = files;
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
-                        setTimeout(() => {
-                            if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 10000);
-                    });
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
                 });
             }
             break;
@@ -285,10 +262,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`SRMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -297,13 +271,11 @@ async function download_zips(package_id = "xxmi") {
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
                     unzip(archive, extractDir);
-                    list_archive_files(archive).then(files => {
-                        pkg.file_list = files;
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
-                        setTimeout(() => {
-                            if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 10000);
-                    });
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
                 });
             }
             break;
@@ -316,10 +288,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`ZZMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -328,13 +297,11 @@ async function download_zips(package_id = "xxmi") {
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
                     unzip(archive, extractDir);
-                    list_archive_files(archive).then(files => {
-                        pkg.file_list = files;
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
-                        setTimeout(() => {
-                            if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 10000);
-                    });
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
                 });
             }
             break;
@@ -347,10 +314,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`HIMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -359,13 +323,11 @@ async function download_zips(package_id = "xxmi") {
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
                     unzip(archive, extractDir);
-                    list_archive_files(archive).then(files => {
-                        pkg.file_list = files;
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
-                        setTimeout(() => {
-                            if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 10000);
-                    });
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
                 });
             }
             break;
@@ -378,10 +340,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`WWMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -390,13 +349,11 @@ async function download_zips(package_id = "xxmi") {
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
                     unzip(archive, extractDir);
-                    list_archive_files(archive).then(files => {
-                        pkg.file_list = files;
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
-                        setTimeout(() => {
-                            if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 10000);
-                    });
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
                 });
             }
             break;
@@ -409,10 +366,7 @@ async function download_zips(package_id = "xxmi") {
                     console.error(`SSMI package not found in xxmi.json`);
                     return;
                 }
-                let dl = await fetch(pkg.git_url, {
-                    method: "GET",
-                    headers: {"User-Agent": USER_AGENT}
-                });
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
                 const bodyStream = Readable.fromWeb(dl.body);
                 const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
                 bodyStream.pipe(fileStream);
@@ -421,13 +375,11 @@ async function download_zips(package_id = "xxmi") {
                     let archive = `${__dirname}/generated/${pkg.package_name}`;
                     emptyDir(`${extractDir}`);
                     unzip(archive, extractDir);
-                    list_archive_files(archive).then(files => {
-                        pkg.file_list = files;
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
                         writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
-                        setTimeout(() => {
-                            if (existsSync(archive)) {unlinkSync(archive);}
-                        }, 10000);
-                    });
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
                 });
             }
             break;
@@ -436,27 +388,36 @@ async function download_zips(package_id = "xxmi") {
 }
 
 function unzip(zipPath, outputDir) {
-    exec(`/usr/bin/unzip -o ${zipPath} -d ${outputDir}`, (err, stdout, stderr) => {
-        if (err) {console.error('Extraction error:', err);}
-        if (stderr) {console.error('Extraction error:', stderr);}
+    return new Promise((resolve, reject) => {
+        exec(`/usr/bin/unzip -o "${zipPath}" -d "${outputDir}"`, (err, _stdout, _stderr) => {
+            if (err) {
+                console.error('Extraction error:', err);
+                reject(err);
+            } else {resolve();}
+        });
     });
 }
 
-function list_archive_files(zipPath) {
-    return new Promise((resolve, reject) => {
-        exec(`/usr/bin/unzip -l ${zipPath} | awk '/^[ ]*[0-9]+/ {print $4}'`, (err, stdout, stderr) => {
-            if (err) {
-                reject(`List archive files error: ${err}`);
-                return;
+function list_extracted_dir(dirPath) {
+    const results = [];
+    function walk(dir) {
+        try {
+            const entries = readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                const relativePath = path.relative(dirPath, fullPath);
+                const entryPath = relativePath || entry.name;
+                if (entry.isDirectory()) {
+                    results.push(`${entryPath}/`);
+                    walk(fullPath);
+                } else {results.push(entryPath);}
             }
-            if (stderr) {
-                reject(`List archive files error: ${stderr}`);
-                return;
-            }
-            const files = stdout.split('\n').map(x => x.trim()).filter(Boolean);
-            resolve(files);
-        });
-    });
+        } catch (err) {console.error(`Walk failed in ${dir}:`, err);}
+    }
+    walk(dirPath);
+    const sorted = results.sort();
+    console.log(`Found ${sorted.length} recursive entries in ${dirPath}`);
+    return sorted;
 }
 
 function appendVersion(filePath, key, value) {
@@ -495,14 +456,26 @@ function emptyDir(dirPath) {
     }
 }
 
-prepareJSON("xxmi").then(() => download_zips("xxmi"))
-    .then(() => prepareJSON("gimi"))
-    .then(() => download_zips("gimi"))
-    .then(() => prepareJSON("srmi"))
-    .then(() => download_zips("srmi"))
-    .then(() => prepareJSON("zzmi"))
-    .then(() => download_zips("zzmi"))
-    .then(() => prepareJSON("himi"))
-    .then(() => download_zips("himi"))
-    .then(() => prepareJSON("wwmi"))
-    .then(() => download_zips("wwmi"));
+(async () => {
+    const packages = ['xxmi', 'gimi', 'srmi', 'zzmi', 'himi', 'wwmi'];
+    for (const package_id of packages) {
+        console.log(`Processing ${package_id.toUpperCase()}`);
+        await prepareJSON(package_id);
+        await download_zips(package_id);
+        await new Promise(resolve => {
+            const check = setInterval(() => {
+                try {
+                    if (existsSync(PATHS.xxmi)) {
+                        const json = JSON.parse(readFileSync(PATHS.xxmi, 'utf8'));
+                        const pkg = json.packages.find(p => p.package_name.toLowerCase().includes(package_id));
+                        if (pkg && pkg.file_list && pkg.file_list.length > 0) {clearInterval(check);resolve();}
+                    }
+                } catch (e) {}
+            }, 500);
+            setTimeout(() => {
+                clearInterval(check);
+                resolve();
+            }, 20000);
+        });
+    }
+})();
