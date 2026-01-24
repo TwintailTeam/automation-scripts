@@ -64,7 +64,7 @@ async function prepareJSON(package_id = "xxmi") {
                 size: asset[0].size,
                 package_name: asset[0].name,
                 raw_url: `${TTL_BASE}/${package_id}`,
-                default_download_mode: "DOWNLOAD_MODE_FILE",
+                default_download_mode: "DOWNLOAD_MODE_RAW",
                 file_list: []
             };
             if (existsSync(`${PATHS.xxmi}`)) {
@@ -88,7 +88,7 @@ async function prepareJSON(package_id = "xxmi") {
                 size: asset[0].size,
                 package_name: asset[0].name,
                 raw_url: `${TTL_BASE}/${package_id}`,
-                default_download_mode: "DOWNLOAD_MODE_FILE",
+                default_download_mode: "DOWNLOAD_MODE_RAW",
                 file_list: []
             };
             if (existsSync(`${PATHS.xxmi}`)) {
@@ -112,7 +112,7 @@ async function prepareJSON(package_id = "xxmi") {
                 size: asset[0].size,
                 package_name: asset[0].name,
                 raw_url: `${TTL_BASE}/${package_id}`,
-                default_download_mode: "DOWNLOAD_MODE_FILE",
+                default_download_mode: "DOWNLOAD_MODE_RAW",
                 file_list: []
             };
             if (existsSync(`${PATHS.xxmi}`)) {
@@ -136,7 +136,7 @@ async function prepareJSON(package_id = "xxmi") {
                 size: asset[0].size,
                 package_name: asset[0].name,
                 raw_url: `${TTL_BASE}/${package_id}`,
-                default_download_mode: "DOWNLOAD_MODE_FILE",
+                default_download_mode: "DOWNLOAD_MODE_RAW",
                 file_list: []
             };
             if (existsSync(`${PATHS.xxmi}`)) {
@@ -160,7 +160,7 @@ async function prepareJSON(package_id = "xxmi") {
                 size: asset[0].size,
                 package_name: asset[0].name,
                 raw_url: `${TTL_BASE}/${package_id}`,
-                default_download_mode: "DOWNLOAD_MODE_FILE",
+                default_download_mode: "DOWNLOAD_MODE_RAW",
                 file_list: []
             };
             if (existsSync(`${PATHS.xxmi}`)) {
@@ -184,7 +184,7 @@ async function prepareJSON(package_id = "xxmi") {
                 size: asset[0].size,
                 package_name: asset[0].name,
                 raw_url: `${TTL_BASE}/${package_id}`,
-                default_download_mode: "DOWNLOAD_MODE_FILE",
+                default_download_mode: "DOWNLOAD_MODE_RAW",
                 file_list: []
             };
             if (existsSync(`${PATHS.xxmi}`)) {
