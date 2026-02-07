@@ -14,6 +14,7 @@ let PATHS = {
     versions_file_himi: `${__dirname}/generated/himi/VERSION.txt`,
     versions_file_wwmi: `${__dirname}/generated/wwmi/VERSION.txt`,
     versions_file_ssmi: `${__dirname}/generated/ssmi/VERSION.txt`,
+    versions_file_efmi: `${__dirname}/generated/efmi/VERSION.txt`
 }
 
 let USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3";
@@ -24,7 +25,8 @@ let URLS = {
     zzmi: "https://api.github.com/repos/leotorrez/ZZMI-Package/releases/latest",
     himi: "https://api.github.com/repos/leotorrez/HIMI-Package/releases/latest",
     wwmi: "https://api.github.com/repos/SpectrumQT/WWMI-Package/releases/latest",
-    ssmi: ""
+    ssmi: "",
+    efmi: "https://api.github.com/repos/SpectrumQT/EFMI-Package/releases/latest"
 };
 
 async function prepareJSON(package_id = "xxmi") {
@@ -193,6 +195,30 @@ async function prepareJSON(package_id = "xxmi") {
                 writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
             }
             appendVersion(`${PATHS.versions_file_ssmi}`, "SSMI", `${ver}`);
+            break;
+        }
+        case "efmi": {
+            let request = await fetch(URLS.efmi, {method: "GET", headers: {"Content-Type": "application/json", "User-Agent": USER_AGENT}});
+            if (!request.ok) { console.error(`Failed with error (EFMI) ${request.status} ${request.statusText}`); return; }
+            let rsp = await request.json();
+            let asset = rsp.assets.filter(asset => asset.name.toLowerCase().includes(package_id));
+            let ver = rsp.tag_name.replace("v", "");
+            let data = {
+                git_url: asset[0].browser_download_url,
+                version: ver,
+                zip_sha256: `${asset[0].digest.replace("sha256:", "")}`,
+                size: asset[0].size,
+                package_name: asset[0].name,
+                raw_url: `${TTL_BASE}/${package_id}`,
+                default_download_mode: "DOWNLOAD_MODE_FILE",
+                file_list: []
+            };
+            if (existsSync(`${PATHS.xxmi}`)) {
+                let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
+                file.packages.push(data);
+                writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
+            }
+            appendVersion(`${PATHS.versions_file_efmi}`, "EFMI", `${ver}`);
             break;
         }
     }
@@ -364,6 +390,32 @@ async function download_zips(package_id = "xxmi") {
                 let pkg = file.packages.find(p => p.package_name.toLowerCase().includes('ssmi'));
                 if (!pkg) {
                     console.error(`SSMI package not found in xxmi.json`);
+                    return;
+                }
+                let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
+                const bodyStream = Readable.fromWeb(dl.body);
+                const fileStream = createWriteStream(`${__dirname}/generated/${pkg.package_name}`);
+                bodyStream.pipe(fileStream);
+                fileStream.on('finish', () => {
+                    let extractDir = `${__dirname}/generated/${package_id}`;
+                    let archive = `${__dirname}/generated/${pkg.package_name}`;
+                    emptyDir(`${extractDir}`);
+                    unzip(archive, extractDir);
+                    setTimeout(() => {
+                        pkg.file_list = list_extracted_dir(extractDir);
+                        writeFileSync(`${PATHS.xxmi}`, JSON.stringify(file, null, 2));
+                        if (existsSync(archive)) unlinkSync(archive);
+                    }, 3000);
+                });
+            }
+            break;
+        }
+        case "efmi": {
+            if (existsSync(`${PATHS.xxmi}`)) {
+                let file = JSON.parse(readFileSync(`${PATHS.xxmi}`, 'utf8'));
+                let pkg = file.packages.find(p => p.package_name.toLowerCase().includes('efmi'));
+                if (!pkg) {
+                    console.error(`EFMI package not found in xxmi.json`);
                     return;
                 }
                 let dl = await fetch(pkg.git_url, {method: "GET", headers: {"User-Agent": USER_AGENT}});
