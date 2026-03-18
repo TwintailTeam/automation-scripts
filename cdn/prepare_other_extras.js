@@ -156,5 +156,4 @@ function emptyDir(dirPath) {
     }
 }
 
-prepareJSON("keqing_unlock").then(() => download_zips("keqing_unlock"))
-    .then(() => prepareJSON("jadeite")).then(() => download_zips("jadeite"));
+prepareJSON("keqing_unlock").then(() => download_zips("keqing_unlock"));

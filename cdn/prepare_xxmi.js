@@ -246,7 +246,7 @@ async function download_zips(package_id = "xxmi") {
                     setTimeout(() => {
                         if (existsSync(archive)) {unlinkSync(archive);}
                     }, 3000);
-                    let dl2 = await fetch("https://github.com/TwintailTeam/3dmloader-Package/releases/download/2.0/3dmloader.exe", {method: "GET", headers: {"User-Agent": USER_AGENT}});
+                    let dl2 = await fetch("https://github.com/TwintailTeam/3dmloader-Package/releases/download/3.0/3dmloader.exe", {method: "GET", headers: {"User-Agent": USER_AGENT}});
                     const bodyStream2 = Readable.fromWeb(dl2.body);
                     const fileStream2 = createWriteStream(`${__dirname}/generated/${package_id}/3dmloader.exe`);
                     bodyStream2.pipe(fileStream2);
@@ -527,7 +527,7 @@ function emptyDir(dirPath) {
             setTimeout(() => {
                 clearInterval(check);
                 resolve();
-            }, 20000);
+            }, 5000);
         });
     }
 })();
