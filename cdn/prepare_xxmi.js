@@ -509,7 +509,7 @@ function emptyDir(dirPath) {
 }
 
 (async () => {
-    const packages = ['xxmi', 'gimi', 'srmi', 'zzmi', 'himi', 'wwmi'];
+    const packages = ['xxmi', 'gimi', 'srmi', 'zzmi', 'himi', 'wwmi', 'efmi'];
     for (const package_id of packages) {
         console.log(`Processing ${package_id.toUpperCase()}`);
         await prepareJSON(package_id);
